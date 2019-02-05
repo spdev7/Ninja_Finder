@@ -9,14 +9,15 @@ const app = express();
 // mongoose.connect('mongodb:localhost/ninjago');
 // mongoose.Promise = global.Promise;
 mongoose.connect("mongodb://localhost/ninjago", { useNewUrlParser: true });
-
+//For serving front end static files
+app.use(express.static('public'));
 ///First Middleware
 app.use(bodyParser.json());
 //Second Middleware
 app.use('/api',require('./routes/api'));
 //Third Middleware
 app.use((err,req,res,next)=>{
-  res.status.send({error:err.message});
+  res.status(422).send({error:err.message});
 });
 
 //listen for express
