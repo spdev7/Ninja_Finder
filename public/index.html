@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Ninja</title>
+    <link href="https://fonts.googleapis.com/css?family=Merriweather" rel="stylesheet">
+    <link rel="stylesheet" href="/style.css" type="text/css" />
+</head>
+<body>
+    <h1 class="title">Ninjago - a ninja Rest API</h1>
+    <div id="homepage">
+          <h1>Hire a Ninja in your Area</h1>
+        <div id="ninja">
+
+        </div>
+    </div>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script type="text/babel">
+    class Ninja extends React.Component {
+        constructor(props){
+            super(props);
+            this.state = {
+                ninjas:[]
+            }
+        }
+        handleSubmit(e){
+            var lng= this.refs.lng.value;
+             var lat= this.refs.lat.value;
+
+             fetch('/api/ninjas?lng=' + lng +'&lat=' + lat).then(function(data){
+               return data.json();
+             }).then(json => {
+                 this.setState({
+                      ninjas:json
+                 });
+             });
+        }
+        render(){
+            var ninjas = this.state.ninjas;
+            ninjas = ninjas.map((ninja,index)=> {
+                return(
+                      <li key={index}>
+                        <span className={ninja.obj.available}></span>
+                        <span className="name">{ninja.obj.name}</span>
+                        <span className="rank">{ninja.obj.rank}</span>
+                        <span className="dist">{Math.floor(ninja.dis / 1000)} km</span>
+                     </li>
+                        );
+                 return(
+                 <div id="ninja-container">
+                    <form id="search" onSubmit={this.handleSubmit}>
+                        <label>Enter a latitude:</label>
+                        <input type="text" ref="lat" placeholder="latitude" required />
+                        <label>Enter a longitude:</label>
+                        <input type="text" ref="lng" placeholder="longitude" required />
+                        <input type="submit" value="Find Ninja" />        
+                        </form>
+                        <ul>{ninjas}</ul>
+                        </div>
+                        
+                        );       
+                    });
+                }
+            }
+    React.render(<Ninja/>,document.getElementById('ninja'));
+            </script>
+        </body>
+        </html>
+
+
+<!--         
+    // var Ninja = createReactClass({
+    //     getInitialState:function(){
+    //         return({
+    //             ninjas:[]
+    //         });
+    //     },
+    //      render:function(){
+    //          var ninjas =this.state.ninjas;
+    //          ninjas =ninjas.map(function(ninja,index) {
+    //               return(
+    //                   <li key={index}>
+    //                     <span className={ninja.obj.available}></span>
+    //                     <span className="name">{ninja.obj.name}</span>
+    //                     <span className="rank">{ninja.obj.rank}</span>
+    //                     <span className="dist">{Math.floor(ninja.dis / 1000)} km</span>
+    //                  </li>
+    //                     );
+    //          });
+    //          return(
+    //              <div id="ninj-container">
+    //                 <form id="search" onSubmit={this.handleSubmit}>
+    //                     <label>Enter a latitude:</label>
+    //                     <input type="text" ref="lat" placeholder="latitude" required />
+    //                     <label>Enter a longitude:</label>
+    //                     <input type="text" ref="lng" placeholder="longitude" required />
+    //                     <input type="submit" value="Find Ninja" />        
+    //                 </form>
+    //                 <ul>{ninjas}</ul>
+    //              </div>
+
+    //          );
+    //      },
+    //      handleSubmit:function(e){
+    //          e.preventDefault();
+    //          var lng= this.refs.lng.value;
+    //          var lat= this.refs.lat.value;
+
+    //          fetch('/api/ninjas?lng=' + lng +'&lat=' + lat).then(function(data){
+    //            return data.json();
+    //          }).then(json => {
+    //              this.setState({
+    //                   ninjas:json
+    //              });
+    //          });
+    //         }
+
+    // }); -->
