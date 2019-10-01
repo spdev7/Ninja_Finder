@@ -22,6 +22,6 @@ app.use((err,req,res,next)=>{
 
 //listen for express
 app.listen(process.env.port || 3000,()=>{
- console.log('now listening for requests');
+ console.log('now listening for Requests');
 }); 
 
